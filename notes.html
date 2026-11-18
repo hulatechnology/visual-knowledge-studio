@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notes | Visual Knowledge Studio</title>
+  <meta name="description" content="Potential lesson topics for each industry, grouped into packs.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#FBF9F6">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23FF3D8B'/%3E%3Cstop offset='1' stop-color='%237C5CFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M9 10l7 12 7-12' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    html { scroll-padding-top: 130px; }
+    .nav { background: rgba(251,249,246,.9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--line); }
+    .nav__inner.notes-nav { grid-template-columns: 1fr auto; }
+    .notes-hero { padding: 132px 0 0; position: relative; }
+    .notes-hero__glow { position: absolute; inset: 0 0 -80px; pointer-events: none; z-index: -1; background:
+      radial-gradient(35% 60% at 15% 20%, rgb(var(--c1) / .14), transparent 70%),
+      radial-gradient(35% 60% at 85% 10%, rgb(var(--c3) / .16), transparent 70%); }
+    .notes-hero h1 { font: 800 clamp(40px, 6vw, 76px)/1 var(--f-head); letter-spacing: -.045em; margin: 0; text-wrap: balance; }
+    .notes-hero p { margin: 16px 0 0; max-width: 560px; color: var(--ink-2); font-size: 17px; }
+    .stats { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+    .stats span { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 10px 16px; font-size: 14px; color: var(--ink-2); }
+    .stats b { display: block; font: 800 26px/1.1 var(--f-head); letter-spacing: -.03em; color: var(--ink); }
+    .stats .star-key b { color: #E8A317; }
+
+    .jump { position: sticky; top: 72px; z-index: 50; margin-top: 40px; background: rgba(251,249,246,.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .jump__row { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0; scrollbar-width: none; }
+    .jump__row::-webkit-scrollbar { display: none; }
+    .jump a { flex: none; display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; padding: 8px 14px; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--line-2); white-space: nowrap; transition: box-shadow .2s; }
+    .jump a:hover { box-shadow: inset 0 0 0 1.5px var(--a); }
+    .jump a i { width: 8px; height: 8px; border-radius: 50%; background: var(--a); }
+
+    .ind { padding: 64px 0 0; }
+    .ind__head { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 24px; }
+    .ind__num { flex: none; width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--a); color: #fff; font: 600 15px var(--f-mono); }
+    .ind__head h2 { font: 800 clamp(26px, 3.2vw, 38px)/1.08 var(--f-head); letter-spacing: -.035em; margin: 0; }
+    .ind__head p { margin: 6px 0 0; color: var(--ink-3); font-size: 14.5px; }
+    .packs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
+    .pack { background: #fff; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
+    .pack__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 18px 22px 14px; border-top: 4px solid var(--a); border-bottom: 1px solid var(--line); }
+    .pack__head h3 { font: 700 18px/1.2 var(--f-head); letter-spacing: -.02em; margin: 0; }
+    .pack__head span { flex: none; font: 600 11px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+    .pack__list { list-style: none; margin: 0; padding: 0; }
+    .pack__list li { display: grid; grid-template-columns: minmax(0, 38%) 1fr; gap: 16px; padding: 12px 22px; border-top: 1px solid var(--line); font-size: 14.5px; line-height: 1.45; }
+    .pack__list li:first-child { border-top: 0; }
+    .pack__topic { font-weight: 600; color: var(--ink); }
+    .pack__exp { color: var(--ink-2); }
+    .pack__list li.is-star { background: #FFF8E1; }
+    .star { color: #E8A317; margin-right: 6px; font-weight: 400; }
+
+    .notes-foot { margin-top: 88px; padding: 32px 0 40px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); }
+    .notes-foot a { color: var(--ink-2); font-weight: 500; }
+    .notes-foot a:hover { color: var(--ink); }
+
+    @media (max-width: 960px) { .packs { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) {
+      .nav__inner.notes-nav { height: 64px; }
+      .jump { top: 64px; margin-top: 32px; }
+      .notes-hero { padding-top: 104px; }
+      .notes-hero p { font-size: 16px; }
+      .hide-sm { display: none; }
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+      .stats span { padding: 8px 10px; font-size: 12.5px; }
+      .stats b { font-size: 22px; }
+      .ind { padding-top: 48px; }
+      .ind__head { gap: 14px; }
+      .ind__num { width: 42px; height: 42px; border-radius: 12px; font-size: 13px; }
+      .pack__head { padding: 16px 18px 12px; }
+      .pack__list li { grid-template-columns: 1fr; gap: 2px; padding: 12px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__inner notes-nav wrap">
+    <a href="index.html" class="brand" aria-label="Visual Knowledge Studio home">
+      <span class="brand__mark" aria-hidden="true">V</span>
+      <span class="brand__word">Visual Knowledge Studio</span>
+    </a>
+    <a href="index.html" class="btn btn--line btn--sm"><span aria-hidden="true">&larr;</span> Back<span class="hide-sm"> to site</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="notes-hero">
+    <div class="notes-hero__glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <h1>Topic list <span class="grad">by industry.</span></h1>
+      <p>Potential lessons for each industry, grouped into packs.</p>
+      <div class="stats">
+        <span><b>8</b>industries</span>
+        <span><b>30</b>packs</span>
+        <span><b>125</b>topics</span>
+        <span class="star-key"><b>&#9733;</b>starred topic</span>
+      </div>
+    </div>
+  </section>
+
+  <nav class="jump" aria-label="Jump to industry">
+    <div class="wrap">
+      <div class="jump__row">
+        <a href="#corporate-training-and-hr" style="--a:#7C5CFF"><i></i>Corporate Training and HR</a>
+        <a href="#cybersecurity" style="--a:#FF3B30"><i></i>Cybersecurity</a>
+        <a href="#legal-professional-and-compliance" style="--a:#B8924A"><i></i>Legal, Professional and Compliance</a>
+        <a href="#financial-services-and-insurance" style="--a:#0F9D63"><i></i>Financial Services and Insurance</a>
+        <a href="#healthcare-and-pharmaceuticals" style="--a:#FF3D8B"><i></i>Healthcare and Pharmaceuticals</a>
+        <a href="#retail-and-e-commerce" style="--a:#FF6B3D"><i></i>Retail and E-commerce</a>
+        <a href="#real-estate-and-property" style="--a:#C2410C"><i></i>Real Estate and Property</a>
+        <a href="#education-and-edtech" style="--a:#2563EB"><i></i>Education and EdTech</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <section class="ind" id="corporate-training-and-hr" style="--a:#7C5CFF" aria-labelledby="h-corporate-training-and-hr">
+      <header class="ind__head">
+        <span class="ind__num">01</span>
+        <div>
+          <h2 id="h-corporate-training-and-hr">Corporate Training and HR</h2>
+          <p>22 topics in 4 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Leave and pay</h3><span>9 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Basic Conditions of Employment Act</span><span class="pack__exp">Understanding the BCEA</span></li>
+            <li><span class="pack__topic">Working hours</span><span class="pack__exp">Ordinary hours, overtime and rest periods</span></li>
+            <li><span class="pack__topic">Annual leave</span><span class="pack__exp">How annual leave works</span></li>
+            <li><span class="pack__topic">Sick leave</span><span class="pack__exp">Understanding your sick leave entitlement</span></li>
+            <li><span class="pack__topic">Family responsibility leave</span><span class="pack__exp">Who qualifies and when?</span></li>
+            <li><span class="pack__topic">Parental leave</span><span class="pack__exp">Understanding parental leave</span></li>
+            <li><span class="pack__topic">Minimum wage</span><span class="pack__exp">Understanding the National Minimum Wage</span></li>
+            <li><span class="pack__topic">Payslips</span><span class="pack__exp">Understanding your payslip</span></li>
+            <li><span class="pack__topic">UIF</span><span class="pack__exp">How the Unemployment Insurance Fund works</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Contracts and disputes</h3><span>6 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Employment contracts</span><span class="pack__exp">What should your employment contract contain?</span></li>
+            <li><span class="pack__topic">Labour Relations Act</span><span class="pack__exp">Understanding the LRA</span></li>
+            <li><span class="pack__topic">Disciplinary procedures</span><span class="pack__exp">How disciplinary hearings work</span></li>
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>Dismissals</span><span class="pack__exp">Understanding fair and unfair dismissal</span></li>
+            <li><span class="pack__topic">CCMA</span><span class="pack__exp">What happens when an employee refers a dispute?</span></li>
+            <li><span class="pack__topic">Constructive dismissal</span><span class="pack__exp">What does constructive dismissal mean?</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Fair workplace</h3><span>3 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Employment Equity Act</span><span class="pack__exp">Understanding employment equity</span></li>
+            <li><span class="pack__topic">Workplace discrimination</span><span class="pack__exp">What constitutes unfair discrimination?</span></li>
+            <li><span class="pack__topic">Harassment</span><span class="pack__exp">Understanding workplace harassment</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Safety and skills</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Occupational Health and Safety Act</span><span class="pack__exp">Employer and employee responsibilities</span></li>
+            <li><span class="pack__topic">COIDA</span><span class="pack__exp">Understanding compensation for workplace injuries</span></li>
+            <li><span class="pack__topic">Skills Development Act</span><span class="pack__exp">How workplace skills development works</span></li>
+            <li><span class="pack__topic">POPIA</span><span class="pack__exp">Understanding personal information and privacy</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="ind" id="cybersecurity" style="--a:#FF3B30" aria-labelledby="h-cybersecurity">
+      <header class="ind__head">
+        <span class="ind__num">02</span>
+        <div>
+          <h2 id="h-cybersecurity">Cybersecurity</h2>
+          <p>16 topics in 3 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Everyday threats</h3><span>6 topics</span></header>
+          <ol class="pack__list">
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>Phishing</span><span class="pack__exp">Spotting a phishing email before you click</span></li>
+            <li><span class="pack__topic">Smishing and vishing</span><span class="pack__exp">Scam SMSes and phone calls</span></li>
+            <li><span class="pack__topic">Social engineering</span><span class="pack__exp">How scammers talk their way in</span></li>
+            <li><span class="pack__topic">Invoice fraud</span><span class="pack__exp">When a supplier's bank details &quot;change&quot;</span></li>
+            <li><span class="pack__topic">SIM swap fraud</span><span class="pack__exp">How SIM swaps empty bank accounts</span></li>
+            <li><span class="pack__topic">Deepfakes</span><span class="pack__exp">When the voice on the phone isn't your boss</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Safe habits</h3><span>6 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Passwords</span><span class="pack__exp">Building a strong passphrase</span></li>
+            <li><span class="pack__topic">Multi-factor authentication</span><span class="pack__exp">Why a second step stops most attacks</span></li>
+            <li><span class="pack__topic">Software updates</span><span class="pack__exp">Why updates matter</span></li>
+            <li><span class="pack__topic">Remote working</span><span class="pack__exp">Working safely from home and public Wi-Fi</span></li>
+            <li><span class="pack__topic">USB and devices</span><span class="pack__exp">The danger of unknown devices</span></li>
+            <li><span class="pack__topic">Clean desk</span><span class="pack__exp">What you leave on screen and on paper</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Incidents and the law</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Ransomware</span><span class="pack__exp">What ransomware does to a business</span></li>
+            <li><span class="pack__topic">Reporting incidents</span><span class="pack__exp">What to do the moment something feels wrong</span></li>
+            <li><span class="pack__topic">Cybercrimes Act</span><span class="pack__exp">Understanding the Cybercrimes Act</span></li>
+            <li><span class="pack__topic">POPIA breaches</span><span class="pack__exp">What happens when personal data leaks</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="ind" id="legal-professional-and-compliance" style="--a:#B8924A" aria-labelledby="h-legal-professional-and-compliance">
+      <header class="ind__head">
+        <span class="ind__num">03</span>
+        <div>
+          <h2 id="h-legal-professional-and-compliance">Legal, Professional and Compliance</h2>
+          <p>15 topics in 4 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Company compliance</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Companies Act</span><span class="pack__exp">Directors' duties in plain language</span></li>
+            <li><span class="pack__topic">CIPC</span><span class="pack__exp">Annual returns and beneficial ownership</span></li>
+            <li><span class="pack__topic">B-BBEE</span><span class="pack__exp">How B-BBEE scoring works</span></li>
+            <li><span class="pack__topic">Competition Act</span><span class="pack__exp">What counts as anti-competitive behaviour</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Ethics and conduct</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">PRECCA</span><span class="pack__exp">Understanding bribery and corruption law</span></li>
+            <li><span class="pack__topic">Gifts and hospitality</span><span class="pack__exp">When a gift becomes a problem</span></li>
+            <li><span class="pack__topic">Conflicts of interest</span><span class="pack__exp">Spotting and declaring a conflict</span></li>
+            <li><span class="pack__topic">Whistleblowing</span><span class="pack__exp">How the Protected Disclosures Act protects you</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Data and money</h3><span>3 topics</span></header>
+          <ol class="pack__list">
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>POPIA</span><span class="pack__exp">POPIA in 60 seconds: what you can and can't do with customer data</span></li>
+            <li><span class="pack__topic">FICA</span><span class="pack__exp">Why we ask for your ID and proof of address</span></li>
+            <li><span class="pack__topic">Money laundering</span><span class="pack__exp">How to spot suspicious transactions</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Client education</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Wills</span><span class="pack__exp">Why you need a valid will</span></li>
+            <li><span class="pack__topic">Deceased estates</span><span class="pack__exp">What happens to an estate after death</span></li>
+            <li><span class="pack__topic">Small Claims Court</span><span class="pack__exp">How to use the Small Claims Court</span></li>
+            <li><span class="pack__topic">Critical Skills Visa</span><span class="pack__exp">5 mistakes that delay a Critical Skills Visa</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="ind" id="financial-services-and-insurance" style="--a:#0F9D63" aria-labelledby="h-financial-services-and-insurance">
+      <header class="ind__head">
+        <span class="ind__num">04</span>
+        <div>
+          <h2 id="h-financial-services-and-insurance">Financial Services and Insurance</h2>
+          <p>16 topics in 4 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Money basics</h3><span>5 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Compound interest</span><span class="pack__exp">What compound interest really does</span></li>
+            <li><span class="pack__topic">Budgeting</span><span class="pack__exp">Building a budget that works</span></li>
+            <li><span class="pack__topic">Credit scores</span><span class="pack__exp">What affects your credit score</span></li>
+            <li><span class="pack__topic">Debit orders</span><span class="pack__exp">Understanding debit orders and disputes</span></li>
+            <li><span class="pack__topic">Tax-free savings</span><span class="pack__exp">How a tax-free savings account works</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Insurance</h3><span>5 topics</span></header>
+          <ol class="pack__list">
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>Policy cover</span><span class="pack__exp">What your insurance actually covers, in plain words</span></li>
+            <li><span class="pack__topic">Excess</span><span class="pack__exp">What an excess is and when you pay it</span></li>
+            <li><span class="pack__topic">Claims</span><span class="pack__exp">How to make a claim that gets paid</span></li>
+            <li><span class="pack__topic">Funeral cover</span><span class="pack__exp">Understanding funeral policies</span></li>
+            <li><span class="pack__topic">Medical aid and gap cover</span><span class="pack__exp">The difference between medical aid and gap cover</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Retirement</h3><span>2 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Two-pot system</span><span class="pack__exp">Understanding the two-pot retirement system</span></li>
+            <li><span class="pack__topic">Retirement annuities</span><span class="pack__exp">How a retirement annuity works</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Staff compliance</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">FAIS</span><span class="pack__exp">Giving advice under the FAIS Act</span></li>
+            <li><span class="pack__topic">Treating Customers Fairly</span><span class="pack__exp">The six TCF outcomes</span></li>
+            <li><span class="pack__topic">National Credit Act</span><span class="pack__exp">Responsible lending explained</span></li>
+            <li><span class="pack__topic">FICA</span><span class="pack__exp">Know your customer</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="ind" id="healthcare-and-pharmaceuticals" style="--a:#FF3D8B" aria-labelledby="h-healthcare-and-pharmaceuticals">
+      <header class="ind__head">
+        <span class="ind__num">05</span>
+        <div>
+          <h2 id="h-healthcare-and-pharmaceuticals">Healthcare and Pharmaceuticals</h2>
+          <p>15 topics in 3 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Patient education</h3><span>8 topics</span></header>
+          <ol class="pack__list">
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>Medication adherence</span><span class="pack__exp">How to take your medication properly, and why stopping early backfires</span></li>
+            <li><span class="pack__topic">Antibiotics</span><span class="pack__exp">Why antibiotics don't treat flu</span></li>
+            <li><span class="pack__topic">Diabetes</span><span class="pack__exp">Living with type 2 diabetes</span></li>
+            <li><span class="pack__topic">High blood pressure</span><span class="pack__exp">Understanding high blood pressure</span></li>
+            <li><span class="pack__topic">HIV treatment</span><span class="pack__exp">Staying on ARVs</span></li>
+            <li><span class="pack__topic">TB</span><span class="pack__exp">Why TB treatment must be finished</span></li>
+            <li><span class="pack__topic">Vaccines</span><span class="pack__exp">How vaccines train the immune system</span></li>
+            <li><span class="pack__topic">Child immunisation</span><span class="pack__exp">Your child's vaccine schedule</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Patient rights</h3><span>3 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Patients' rights</span><span class="pack__exp">The Patients' Rights Charter</span></li>
+            <li><span class="pack__topic">Informed consent</span><span class="pack__exp">What informed consent means</span></li>
+            <li><span class="pack__topic">Prescribed Minimum Benefits</span><span class="pack__exp">What your medical aid must cover</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Staff training</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Hand hygiene</span><span class="pack__exp">Infection prevention in five moments</span></li>
+            <li><span class="pack__topic">Needlestick injuries</span><span class="pack__exp">What to do after a needlestick injury</span></li>
+            <li><span class="pack__topic">Health records</span><span class="pack__exp">Patient confidentiality and POPIA</span></li>
+            <li><span class="pack__topic">Adverse events</span><span class="pack__exp">Reporting side effects to SAHPRA</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="ind" id="retail-and-e-commerce" style="--a:#FF6B3D" aria-labelledby="h-retail-and-e-commerce">
+      <header class="ind__head">
+        <span class="ind__num">06</span>
+        <div>
+          <h2 id="h-retail-and-e-commerce">Retail and E-commerce</h2>
+          <p>13 topics in 3 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Customer rights</h3><span>5 topics</span></header>
+          <ol class="pack__list">
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>Returns</span><span class="pack__exp">Your right to return defective goods</span></li>
+            <li><span class="pack__topic">Online cooling-off</span><span class="pack__exp">Cancelling an online order</span></li>
+            <li><span class="pack__topic">Warranties</span><span class="pack__exp">Warranty vs guarantee</span></li>
+            <li><span class="pack__topic">Pricing</span><span class="pack__exp">Why you pay the lowest displayed price</span></li>
+            <li><span class="pack__topic">Lay-by</span><span class="pack__exp">How lay-by works</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Staff training</h3><span>5 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Customer service</span><span class="pack__exp">Turning a complaint around</span></li>
+            <li><span class="pack__topic">Cash handling</span><span class="pack__exp">Till procedures that prevent losses</span></li>
+            <li><span class="pack__topic">Shrinkage</span><span class="pack__exp">Preventing theft without confrontation</span></li>
+            <li><span class="pack__topic">Card fraud</span><span class="pack__exp">Spotting card fraud at the till</span></li>
+            <li><span class="pack__topic">Food safety</span><span class="pack__exp">Food safety rules for retail</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Customer guides</h3><span>3 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Delivery</span><span class="pack__exp">Tracking your order</span></li>
+            <li><span class="pack__topic">Loyalty programmes</span><span class="pack__exp">Getting the most from rewards</span></li>
+            <li><span class="pack__topic">Product set-up</span><span class="pack__exp">Getting started with your new appliance</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="ind" id="real-estate-and-property" style="--a:#C2410C" aria-labelledby="h-real-estate-and-property">
+      <header class="ind__head">
+        <span class="ind__num">07</span>
+        <div>
+          <h2 id="h-real-estate-and-property">Real Estate and Property</h2>
+          <p>15 topics in 4 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Buying</h3><span>7 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Buying process</span><span class="pack__exp">Buying your first home, explained</span></li>
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>Costs</span><span class="pack__exp">Transfer duty and bond fees: what you'll really pay</span></li>
+            <li><span class="pack__topic">Bond pre-approval</span><span class="pack__exp">Why get pre-approved first</span></li>
+            <li><span class="pack__topic">Offer to purchase</span><span class="pack__exp">What you're signing in an offer to purchase</span></li>
+            <li><span class="pack__topic">Voetstoots</span><span class="pack__exp">What &quot;voetstoots&quot; really means</span></li>
+            <li><span class="pack__topic">Conveyancing</span><span class="pack__exp">What a conveyancer does</span></li>
+            <li><span class="pack__topic">Compliance certificates</span><span class="pack__exp">Electrical, gas, beetle and fence certificates</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Sectional title</h3><span>2 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Levies</span><span class="pack__exp">What your levies pay for</span></li>
+            <li><span class="pack__topic">Body corporate</span><span class="pack__exp">How a body corporate works</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Renting</h3><span>4 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Leases</span><span class="pack__exp">What a lease must include</span></li>
+            <li><span class="pack__topic">Deposits</span><span class="pack__exp">How rental deposits and interest work</span></li>
+            <li><span class="pack__topic">Inspections</span><span class="pack__exp">Move-in and move-out inspections</span></li>
+            <li><span class="pack__topic">Evictions</span><span class="pack__exp">How a lawful eviction works</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Agent compliance</h3><span>2 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Property Practitioners Act</span><span class="pack__exp">Fidelity Fund Certificates and agent duties</span></li>
+            <li><span class="pack__topic">FICA for agents</span><span class="pack__exp">Why agents must verify buyers</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="ind" id="education-and-edtech" style="--a:#2563EB" aria-labelledby="h-education-and-edtech">
+      <header class="ind__head">
+        <span class="ind__num">08</span>
+        <div>
+          <h2 id="h-education-and-edtech">Education and EdTech</h2>
+          <p>13 topics in 5 packs</p>
+        </div>
+      </header>
+      <div class="packs">
+        <article class="pack">
+          <header class="pack__head"><h3>Maths</h3><span>3 topics</span></header>
+          <ol class="pack__list">
+            <li class="is-star"><span class="pack__topic"><b class="star" aria-label="Starred">&#9733;</b>Fractions</span><span class="pack__exp">Why fractions confuse learners, and the one picture that fixes it</span></li>
+            <li><span class="pack__topic">Algebra</span><span class="pack__exp">What &quot;x&quot; actually means</span></li>
+            <li><span class="pack__topic">Percentages</span><span class="pack__exp">Percentages in everyday life</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Science</h3><span>3 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Photosynthesis</span><span class="pack__exp">How photosynthesis turns light into energy</span></li>
+            <li><span class="pack__topic">Electricity</span><span class="pack__exp">How a circuit works</span></li>
+            <li><span class="pack__topic">Water cycle</span><span class="pack__exp">Where rain comes from</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Learner skills</h3><span>3 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Study skills</span><span class="pack__exp">How to study so it sticks</span></li>
+            <li><span class="pack__topic">Exam preparation</span><span class="pack__exp">Planning for exam season</span></li>
+            <li><span class="pack__topic">Subject choice</span><span class="pack__exp">Choosing subjects in Grade 9</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Learner safety</h3><span>2 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">Online safety</span><span class="pack__exp">Staying safe online</span></li>
+            <li><span class="pack__topic">Bullying</span><span class="pack__exp">Recognising and reporting bullying</span></li>
+          </ol>
+        </article>
+        <article class="pack">
+          <header class="pack__head"><h3>Parents and schools</h3><span>2 topics</span></header>
+          <ol class="pack__list">
+            <li><span class="pack__topic">SGBs</span><span class="pack__exp">What a school governing body does</span></li>
+            <li><span class="pack__topic">Reports</span><span class="pack__exp">Understanding your child's report card</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <footer class="notes-foot">
+      <span>&copy; 2026 Visual Knowledge Studio</span>
+      <a href="index.html">Back to site <span aria-hidden="true">&rarr;</span></a>
+    </footer>
+  </div>
+</main>
+
+</body>
+</html>
