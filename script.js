@@ -1,5 +1,5 @@
 /* =========================================================
-   Visual Knowledge Studio
+   Lanim Studios
    Edit CONFIG and the INDUSTRIES list below to update the site.
    ========================================================= */
 
@@ -35,7 +35,7 @@ const INDUSTRIES = [
     title: 'Your first week: onboarding essentials',
     beats: ['Meet your team and tools', 'Know where to find help', 'Understand how we work'],
     video: '',
-    p: { layout: 'badge', bg: '#FFD84D', fg: '#111111', ac: '#7C5CFF', fs: '17cqw',
+    p: { layout: 'badge', bg: '#FFD84D', fg: '#111111', ac: '#6440F0', fs: '17cqw',
       top: ['People & HR', 'Ep. 01'], words: ['Your', 'first', 'week'], sticker: 'On&shy;board&shy;ing', foot: 'Everything new starters need' } },
 
   { name: 'Healthcare and Pharmaceuticals', type: 'Patient education',
@@ -43,7 +43,7 @@ const INDUSTRIES = [
     title: 'How vaccines train the immune system',
     beats: ['The body meets a harmless copy', 'It builds a defence', 'It remembers for next time'],
     video: '',
-    p: { layout: 'split', bg: '#FFF5F8', fg: '#2A0F1C', ac: '#FF3D8B', fs: '10.5cqw',
+    p: { layout: 'split', bg: '#FFF5F8', fg: '#2A0F1C', ac: '#D81B67', fs: '10.5cqw',
       top: ['Patient guide', '02:20'], head: 'How vaccines train your body', foot: 'Immunity, explained' } },
 
   { name: 'Financial Services and Insurance', type: 'Customer education',
@@ -68,7 +68,7 @@ const INDUSTRIES = [
     beats: ['What the rule says', 'What it means for you', 'What to do next'],
     video: '',
     p: { layout: 'serif', bg: '#15161C', fg: '#F1ECE2', ac: '#C8A96A', fs: '15cqw',
-      top: ['Compliance', 'Module 3'], head: 'The fine print, <em>made plain.</em>', sub: 'Your obligations in four short scenes' } },
+      top: ['Compliance', 'Module 3'], head: 'The fine print, <em>made plain.</em>', sub: 'Your obligations in four short scenes', fine: true } },
 
   { name: 'Retail and E-commerce', type: 'Customer guide',
     desc: 'Product education, staff training and customer guidance.',
@@ -84,7 +84,7 @@ const INDUSTRIES = [
     beats: ['Get pre-approved', 'Make an offer', 'Transfer and collect your keys'],
     video: '',
     p: { layout: 'notes', bg: '#F6F1EA', fg: '#2B1D14', ac: '#C2410C', fs: '15cqw',
-      top: ['Property', 'Buyer guide'], head: 'Buying a home', rows: ['Get pre-approved', 'Make an offer', 'Transfer & keys'] } }
+      top: ['Property', 'Buyer guide'], head: 'Buying a home', illo: 'house', rows: ['Get pre-approved', 'Make an offer', 'Transfer & keys'] } }
 ];
 
 
@@ -113,7 +113,8 @@ function poster(p, extraClass = '') {
         ${p.bars ? `<div class="p-bars">${[38, 62, 48, 80, 56, 100].map(h => `<b style="height:${h}%"></b>`).join('')}</div>` : foot(p.foot || '')}</div>`;
       break;
     case 'serif':
-      body = `<div class="pz">${top}<div class="p-serif">${p.head}</div>
+      body = `<div class="pz">${top}<div class="p-serif${p.fine ? ' p-serif--top' : ''}">${p.head}</div>
+        ${p.fine ? '<div class="p-fine"><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div>' : ''}
         <div><div class="p-rule"></div><div class="p-sub">${esc(p.sub)}</div><div class="p-dots"><i></i><i></i><i></i><i></i></div></div></div>`;
       break;
     case 'steps':
@@ -131,6 +132,14 @@ function poster(p, extraClass = '') {
         ${p.chart ? `<svg class="p-chart" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 38 C20 36 35 33 50 27 S80 10 100 2" fill="none" stroke="${p.ac}" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
           <path d="M0 38 C20 36 35 33 50 27 S80 10 100 2 V40 H0Z" fill="${p.ac}" opacity=".14"/></svg>` : ''}
+        ${p.illo === 'house' ? `<svg class="p-illo" viewBox="0 0 120 70" aria-hidden="true">
+          <path d="M4 66h112" stroke="currentColor" stroke-width="1.4" opacity=".35"/>
+          <path d="M30 66V34l30-22 30 22v32z" fill="${p.ac}" opacity=".14"/>
+          <path d="M30 66V34l30-22 30 22v32M22 40l38-28 38 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+          <rect x="52" y="44" width="16" height="22" fill="${p.ac}"/>
+          <rect x="38" y="38" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <rect x="73" y="38" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="102" cy="22" r="6" fill="none" stroke="${p.ac}" stroke-width="2"/><path d="M102 28v14M102 36h5M102 40h4" stroke="${p.ac}" stroke-width="2"/></svg>` : ''}
         <div class="p-rows">${p.rows.map(r => `<div><i></i>${esc(r)}</div>`).join('')}</div></div>`;
       break;
     case 'badge':
@@ -181,7 +190,7 @@ function poster(p, extraClass = '') {
   grid.innerHTML = INDUSTRIES.map((d, i) => `
     <button class="tile" data-i="${i}" aria-label="Preview: ${esc(d.title)} (${esc(d.name)})">
       <div style="position:relative;container-type:inline-size">${poster(d.p)}<span class="tile__play">${PLAY}</span></div>
-      <div class="tile__label"><span class="tile__name">${esc(d.name)}</span><span class="tile__type">${esc(d.type)}</span></div>
+      <div class="tile__label"><span class="tile__name">${esc(d.name)}</span></div>
       <p class="tile__desc">${esc(d.desc)}</p>
     </button>`).join('');
   grid.addEventListener('click', e => {
@@ -191,7 +200,7 @@ function poster(p, extraClass = '') {
 })();
 
 /* Posters inside the "Built for people who teach" cards */
-$$('[data-poster]').forEach(el => { el.innerHTML = poster(INDUSTRIES[+el.dataset.poster].p); });
+$$('[data-poster]').forEach(el => { el.innerHTML = poster(INDUSTRIES[+el.dataset.poster].p, 'poster--mini'); });
 
 /* ---------------------------------------------------------
    Preview modal
@@ -312,7 +321,7 @@ $$('[data-plan]').forEach(b => b.addEventListener('click', () => {
 
     const body = [
       `Name: ${data.get('name')}`, `Email: ${data.get('email')}`,
-      `Organisation: ${data.get('organisation') || '-'}`, `I represent: ${data.get('type')}`,
+      `Organisation: ${data.get('organisation') || '-'}`, `I'm from: ${data.get('type')}`,
       `Interested in: ${interests}`, '', data.get('message') || ''
     ].join('\n');
     const subject = `Enquiry from ${data.get('name')}${data.get('organisation') ? ' (' + data.get('organisation') + ')' : ''}`;
